@@ -1,5 +1,4 @@
 Imports System.IO
-Imports System.Reflection
 Imports System.Text.Json
 Public Class 设置_v6
 
@@ -80,6 +79,7 @@ Public Class 设置_v6
     Public Property Agent权限_添加和编辑任务 As Boolean = False
     Public Property Agent权限_访问编码队列 As Boolean = False
 
+    ' 以下 SP_ 前缀仅为兼容旧 Settings.json，已不再代表付费或解锁状态。
     Public Property SP_窗口标题文字 As String = ""
     Public Property SP_起始页面顶栏标题 As String = ""
     Public Property SP_起始页面顶栏副标题 As String = ""
@@ -162,7 +162,7 @@ Public Class 设置_v6
         Form_v6_设置_功能设定.MCB_是否自动开始任务.SelectedIndex = 实例对象.自动开始任务选项
         Form_v6_设置_功能设定.MCB_是否自动重置参数面板到第一个页面.SelectedIndex = 实例对象.自动重置参数面板的页面选择
         Form_v6_设置_功能设定.MCB_任务名称混淆.SelectedIndex = 实例对象.混淆任务名称
-        Form_v6_设置_功能设定.MCB_独立参数面板自动切预设管理.SelectedIndex = 实例对象.打开独立参数面板时自动切到预设管理页面
+        Form_v6_设置_功能设定.MCB_独立参数面板自动切预设管理.SelectedIndex = 实例对象.打开独立参数面板时自动切预设管理页面
         Form_v6_设置_功能设定.MCB_任务失败删除文件.SelectedIndex = 实例对象.任务失败自动删除输出文件
         Form_v6_设置_功能设定.MCB_编码队列显示最新日志行.SelectedIndex = Math.Min(Math.Max(实例对象.编码队列显示最新日志行, 0), 1)
         Form_v6_设置_功能设定.MCB_任务日志保留行数.SelectedIndex = Math.Min(Math.Max(实例对象.任务日志保留行数选项, 0), 3)
@@ -186,7 +186,6 @@ Public Class 设置_v6
         Form_v6_设置_Agent.MTB_APIKEY.Text = 实例对象.AgentApiKey
         Form_v6_设置_Agent.MTB_附加请求头.Text = 实例对象.Agent附加请求头
         Form_v6_设置_Agent.MTB_附加请求Body.Text = 实例对象.Agent附加请求Body
-        Form_v6_设置_Agent.刷新SPAgent端点列表()
         Form_v6_Agent.MCB_联网设置.SelectedIndex = Math.Min(Math.Max(AgentNetworkMode.Normalize(实例对象.Agent联网设置), 0), Math.Max(0, Form_v6_Agent.MCB_联网设置.Items.Count - 1))
         Form_v6_Agent.MCB_权限控制.SelectedIndex = Math.Min(Math.Max(实例对象.Agent权限级别, 0), Math.Max(0, Form_v6_Agent.MCB_权限控制.Items.Count - 1))
 
@@ -205,23 +204,19 @@ Public Class 设置_v6
 
         Dim 起始页面顶栏默认标题 = $"<span style=""font-size:15pt"">FFmpegFreeUI {版本号.获取自身版本号} ReDesign With LakeUI And 1st Anniversary</span>"
         Dim 起始页面顶栏副标题 = "<span style=""font-size:10pt; color:CornflowerBlue"">将 ffmpeg、ffplay、ffprobe 加入环境变量或放置于当前目录即可调用</span>"
-        If 实例对象.SP_起始页面顶栏标题 <> "" AndAlso SP_UnLock Then
+        If 实例对象.SP_起始页面顶栏标题 <> "" Then
             Form_v6_起始页面.HtmlColorLabel1.Text = 实例对象.SP_起始页面顶栏标题
         Else
             Form_v6_起始页面.HtmlColorLabel1.Text = 起始页面顶栏默认标题
         End If
-        If 实例对象.SP_起始页面顶栏副标题 <> "" AndAlso SP_UnLock Then
+        If 实例对象.SP_起始页面顶栏副标题 <> "" Then
             Form_v6_起始页面.HtmlColorLabel1.Text &= "<br>" & 实例对象.SP_起始页面顶栏副标题
         Else
             Form_v6_起始页面.HtmlColorLabel1.Text &= "<br>" & 起始页面顶栏副标题
         End If
 
-        If Not SP_UnLock Then
-            设置主窗体图标(CreateIconFromImage(My.Resources.Resource1.AppIcon))
-            Exit Sub
-        End If
-
-        Form_v6_设置_个性化.HtmlColorLabel1.Text = "感谢您支持 FFmpegFreeUI Supporter Pack"
+        设置主窗体图标(CreateIconFromImage(My.Resources.Resource1.AppIcon))
+        Form_v6_设置_个性化.HtmlColorLabel1.Text = "个性化设置"
         Form_v6_设置_个性化.Panel4.Visible = False
 
         加载SP自定义任务完成音效()
@@ -289,6 +284,7 @@ Public Class 设置_v6
         Return True
     End Function
 
+    ' 旧 SP_ 文件名继续兼容已有用户数据，但不再进行任何解锁判断。
     Public Shared ReadOnly 自定义图标路径 As String = IO.Path.Combine(Application.StartupPath, "SP_Icon")
     Public Shared ReadOnly 自定义起始页顶栏背景图路径 As String = IO.Path.Combine(Application.StartupPath, "SP_MainTopPanel")
     Public Shared ReadOnly 自定义背景图路径 As String = IO.Path.Combine(Application.StartupPath, "SP_BackImage")
@@ -298,12 +294,10 @@ Public Class 设置_v6
     Private Shared _默认背景图 As Image
 
     Public Shared Sub 加载SP自定义任务完成音效()
-        If Not SP_UnLock Then Exit Sub
         Sound_Finish = 加载自定义音效(实例对象.个性化_任务完成音效, My.Resources.Resource1.完成)
     End Sub
 
     Public Shared Sub 加载SP自定义任务失败音效()
-        If Not SP_UnLock Then Exit Sub
         Sound_Error = 加载自定义音效(实例对象.个性化_任务失败音效, My.Resources.Resource1.错误)
     End Sub
 
@@ -329,24 +323,23 @@ Public Class 设置_v6
     End Function
 
     Public Shared Sub 加载SP自定义图标()
-        If Not SP_UnLock Then Exit Sub
         If FileIO.FileSystem.FileExists(自定义图标路径) Then
             Dim image = LoadImageFromFile(自定义图标路径, preserveAnimation:=True)
             设置自有面板图片(Form_v6_起始页面.ModernPanel3, image, _当前自有图标)
             设置主窗体图标(CreateIconFromImage(image))
         End If
     End Sub
+
     Public Shared Sub 加载SP自定义起始页顶栏背景图()
-        If Not SP_UnLock Then Exit Sub
         If FileIO.FileSystem.FileExists(自定义起始页顶栏背景图路径) Then
             设置自有面板图片(Form_v6_起始页面.ModernPanel2,
                          LoadImageFromFile(自定义起始页顶栏背景图路径),
                          _当前自有起始页顶栏背景图)
         End If
     End Sub
+
     Public Shared Sub 加载SP自定义背景图()
         If FileIO.FileSystem.FileExists(设置_v6.自定义背景图路径) Then
-            If Not SP_UnLock Then Exit Sub
             设置自有毛玻璃背景图(LoadImageFromFile(设置_v6.自定义背景图路径))
         Else
             设置默认毛玻璃背景图()
@@ -395,15 +388,5 @@ Public Class 设置_v6
     Private Shared Sub 设置主窗体图标(newIcon As Icon)
         If newIcon Is Nothing Then Return
         FormMain_v6.Icon = newIcon
-    End Sub
-
-    Public Shared Sub 启动时读取SP解锁器()
-        Dim a As String = Path.Combine(Application.StartupPath, "FFmpegFreeUISupporter_v6.dll")
-        If Not FileIO.FileSystem.FileExists(a) Then
-            Exit Sub
-        End If
-        Dim targetType As Type = Assembly.LoadFile(a).GetType("FFmpegFreeUISupporter.Entry")
-        Dim method As MethodInfo = targetType.GetMethod("Entry", BindingFlags.Public Or BindingFlags.NonPublic Or BindingFlags.Static)
-        method.Invoke(Nothing, Nothing)
     End Sub
 End Class
