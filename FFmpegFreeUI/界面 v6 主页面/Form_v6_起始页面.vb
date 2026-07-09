@@ -3,7 +3,8 @@ Imports LakeUI
 Public Class Form_v6_起始页面
 
     Private Sub Form_v6_起始页面_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        ' 清理版移除捐赠/购买推广入口。
+        MB_爱发电.Visible = False
     End Sub
 
     Private Sub Form_v6_起始页面_SizeChanged(sender As Object, e As EventArgs) Handles Me.SizeChanged
@@ -55,10 +56,6 @@ Public Class Form_v6_起始页面
 
     Private Sub MB_哔哩哔哩_Click(sender As Object, e As EventArgs) Handles MB_哔哩哔哩.Click
         Process.Start(New ProcessStartInfo With {.FileName = "https://space.bilibili.com/319785096", .UseShellExecute = True})
-    End Sub
-
-    Private Sub MB_爱发电_Click(sender As Object, e As EventArgs) Handles MB_爱发电.Click
-        Process.Start(New ProcessStartInfo With {.FileName = "https://afdian.com/a/1059Studio", .UseShellExecute = True})
     End Sub
 
     Private Sub MB_终末诗_Click(sender As Object, e As EventArgs) Handles MB_终末诗.Click
