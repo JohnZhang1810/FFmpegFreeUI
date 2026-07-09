@@ -21,10 +21,6 @@ Public Class Form_v6_设置_Agent
         End Try
     End Sub
 
-    Public Sub 刷新SPAgent端点列表()
-        ' 兼容旧调用：SP 端点体系已移除。
-    End Sub
-
     Private Sub MTB_自定义地址_TextChanged(sender As Object, e As EventArgs) Handles MTB_自定义地址.TextChanged
         If _正在加载 Then Exit Sub
         设置_v6.实例对象.AgentEndPoint = MTB_自定义地址.Text.Trim()
