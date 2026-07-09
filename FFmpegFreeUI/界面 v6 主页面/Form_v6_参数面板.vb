@@ -66,7 +66,7 @@ Public Class Form_v6_参数面板
         '==================================================
         Me.ModernTabListControl1.Items(16).BoundControl = 私有界面_自定义参数
         绑定选项卡(私有界面_自定义参数.ModernPanel1)
-        If SP_UnLock AndAlso 设置_v6.实例对象.窗口样式 = 2 AndAlso 设置_v6.实例对象.SP_毛玻璃模式 > 0 Then
+        If 设置_v6.实例对象.窗口样式 = 2 AndAlso 设置_v6.实例对象.SP_毛玻璃模式 > 0 Then
             私有界面_自定义参数.ModernTabControl1.TabStripBackColor = Color.Transparent
             私有界面_自定义参数.ModernTabControl1.ContentBackColor = Color.Transparent
             私有界面_自定义参数说明.ModernPanel1.Padding = New Padding(20, 0, 20, 20)
@@ -88,7 +88,7 @@ Public Class Form_v6_参数面板
         '==================================================
         Me.ModernTabListControl1.Items(19).BoundControl = 私有界面_附加内容
         绑定选项卡(私有界面_附加内容.ModernPanel1)
-        If SP_UnLock AndAlso 设置_v6.实例对象.窗口样式 = 2 AndAlso 设置_v6.实例对象.SP_毛玻璃模式 > 0 Then
+        If 设置_v6.实例对象.窗口样式 = 2 AndAlso 设置_v6.实例对象.SP_毛玻璃模式 > 0 Then
             私有界面_附加内容.ModernTabControl1.TabStripBackColor = Color.Transparent
             私有界面_附加内容.ModernTabControl1.ContentBackColor = Color.Transparent
             私有界面_元数据.ModernPanel1.Padding = New Padding(20, 0, 20, 20)
@@ -118,14 +118,12 @@ Public Class Form_v6_参数面板
     End Sub
 
     Private Sub 绑定选项卡(选项卡的根面板容器 As ModernPanel)
-        If SP_UnLock Then
-            Select Case 设置_v6.实例对象.SP_毛玻璃模式
-                Case > 0
-                    选项卡的根面板容器.BackColor = Color.Transparent
-                    选项卡的根面板容器.BackColor1 = Color.Transparent
-                    选项卡的根面板容器.BackgroundSource = Me.ParentForm
-            End Select
-        End If
+        Select Case 设置_v6.实例对象.SP_毛玻璃模式
+            Case > 0
+                选项卡的根面板容器.BackColor = Color.Transparent
+                选项卡的根面板容器.BackColor1 = Color.Transparent
+                选项卡的根面板容器.BackgroundSource = Me.ParentForm
+        End Select
     End Sub
 
     Public Shared Sub 弹出画面区域选择窗口(完成按钮返回的控件 As Control, 标题栏 As String)

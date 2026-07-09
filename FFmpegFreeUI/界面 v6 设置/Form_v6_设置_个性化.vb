@@ -2,9 +2,6 @@ Imports System.IO
 Imports LakeUI
 
 Public Class Form_v6_设置_个性化
-    Private Sub MB_前往购买_Click(sender As Object, e As EventArgs) Handles MB_前往购买.Click
-        Process.Start(New ProcessStartInfo With {.FileName = "https://ifdian.net/item/a98d04e8b98011f0a49952540025c377", .UseShellExecute = True})
-    End Sub
 
     Private Sub MB_窗口标题文字_Click(sender As Object, e As EventArgs) Handles MB_窗口标题文字.Click
         设置_v6.实例对象.SP_窗口标题文字 = ExInputBox(FormMain_v6, "自定义窗口标题文本，清空即表示还原")
@@ -88,13 +85,11 @@ Public Class Form_v6_设置_个性化
     End Sub
 
     Private Sub MCB_边框宽度_SelectedIndexChanged(sender As Object, e As EventArgs) Handles MCB_边框宽度.SelectedIndexChanged
-        If Not SP_UnLock Then Exit Sub
         设置_v6.实例对象.SP_边框宽度 = MCB_边框宽度.SelectedIndex
         FormMain_v6.ThisIsYourWindow1.BorderSize = MCB_边框宽度.SelectedIndex
     End Sub
 
     Private Sub MCB_毛玻璃模式_SelectedIndexChanged(sender As Object, e As EventArgs) Handles MCB_毛玻璃模式.SelectedIndexChanged
-        If Not SP_UnLock Then Exit Sub
         设置_v6.实例对象.SP_毛玻璃模式 = MCB_毛玻璃模式.SelectedIndex
         Select Case 设置_v6.实例对象.SP_毛玻璃模式
             Case 0
@@ -123,7 +118,6 @@ Public Class Form_v6_设置_个性化
     End Sub
 
     Private Sub MCB_背景来源_SelectedIndexChanged(sender As Object, e As EventArgs) Handles MCB_背景来源.SelectedIndexChanged
-        If Not SP_UnLock Then Exit Sub
         设置_v6.实例对象.SP_毛玻璃背景来源 = MCB_背景来源.SelectedIndex
         Select Case 设置_v6.实例对象.SP_毛玻璃背景来源
             Case 0
@@ -136,7 +130,6 @@ Public Class Form_v6_设置_个性化
     End Sub
 
     Private Sub MCB_噪点颗粒_SelectedIndexChanged(sender As Object, e As EventArgs) Handles MCB_噪点颗粒.SelectedIndexChanged
-        If Not SP_UnLock Then Exit Sub
         设置_v6.实例对象.SP_毛玻璃噪点颗粒 = MCB_噪点颗粒.SelectedIndex
         Select Case MCB_噪点颗粒.SelectedIndex
             Case 0
@@ -160,8 +153,7 @@ Public Class Form_v6_设置_个性化
     End Sub
 
     Private Sub Form_v6_设置_个性化_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        ' 清理版不显示购买、解锁状态或付费宣传卡片。
+        ModernPanel2.Visible = False
     End Sub
-
-
 End Class

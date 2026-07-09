@@ -34,14 +34,12 @@ Public Class Form_v6_设置
     End Sub
 
     Shared Sub 绑定选项卡窗体背景透明(选项卡的根面板容器 As ModernPanel)
-        If SP_UnLock Then
-            Select Case 设置_v6.实例对象.SP_毛玻璃模式
-                Case > 0
-                    选项卡的根面板容器.BackColor = Color.Transparent
-                    选项卡的根面板容器.BackColor1 = Color.Transparent
-                    选项卡的根面板容器.BackgroundSource = FormMain_v6
-            End Select
-        End If
+        Select Case 设置_v6.实例对象.SP_毛玻璃模式
+            Case > 0
+                选项卡的根面板容器.BackColor = Color.Transparent
+                选项卡的根面板容器.BackColor1 = Color.Transparent
+                选项卡的根面板容器.BackgroundSource = FormMain_v6
+        End Select
     End Sub
 
 End Class

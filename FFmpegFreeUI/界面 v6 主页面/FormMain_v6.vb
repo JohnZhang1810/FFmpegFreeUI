@@ -8,9 +8,7 @@ Public Class FormMain_v6
 
     Private Sub FormMain_v6_Load(sender As Object, e As EventArgs) Handles Me.Load
         UI同步上下文 = Threading.SynchronizationContext.Current
-        设置_v6.启动时读取SP解锁器()
         设置_v6.启动时加载设置()
-        网络功能.启动时后台获取SPAgent端点()
 
         设置_v6.加载SP自定义图标()
         设置_v6.加载SP自定义起始页顶栏背景图()
@@ -38,15 +36,15 @@ Public Class FormMain_v6
         绑定选项卡(Form_v6_集成工具.ModernPanel1)
         Me.ModernTabListControl1.Items(14).BoundControl = Form_v6_设置
         绑定选项卡(Form_v6_设置.ModernPanel1)
-        Me.ModernTabListControl1.Items(15).BoundControl = Form_v6_支持者
-        绑定选项卡(Form_v6_支持者.ModernPanel1)
+
+        ' 移除原“支持者”推广入口，保留后续分隔符。
+        If Me.ModernTabListControl1.Items.Count > 15 Then Me.ModernTabListControl1.Items.RemoveAt(15)
 
         Select Case 设置_v6.实例对象.窗口样式
             Case 1
                 DwmWindowStyle.SetDarkMode(Me.Handle, True)
             Case 2
                 Me.ThisIsYourWindow1.Attach(Me)
-                If Not SP_UnLock Then Exit Select
                 Select Case 设置_v6.实例对象.SP_毛玻璃模式
                     Case > 0
                         ModernTabListControl1.TabStripBackColor = Color.Transparent
@@ -93,7 +91,6 @@ Public Class FormMain_v6
 
         网络功能.检查软件本体更新()
         网络功能.检查更新器更新()
-        网络功能.获取新闻列表()
 
         If 设置_v6.实例对象.启用性能计数器 = 0 Then
             MainAppUsageCounter.Start()
@@ -104,14 +101,12 @@ Public Class FormMain_v6
     End Sub
 
     Sub 绑定选项卡(选项卡的根面板容器 As ModernPanel)
-        If SP_UnLock Then
-            Select Case 设置_v6.实例对象.SP_毛玻璃模式
-                Case > 0
-                    选项卡的根面板容器.BackColor = Color.Transparent
-                    选项卡的根面板容器.BackColor1 = Color.Transparent
-                    选项卡的根面板容器.BackgroundSource = Me
-            End Select
-        End If
+        Select Case 设置_v6.实例对象.SP_毛玻璃模式
+            Case > 0
+                选项卡的根面板容器.BackColor = Color.Transparent
+                选项卡的根面板容器.BackColor1 = Color.Transparent
+                选项卡的根面板容器.BackgroundSource = Me
+        End Select
     End Sub
 
     Public Sub 添加插件选项卡(选项卡标题 As String, 面板 As Control)
